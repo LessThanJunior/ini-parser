@@ -90,8 +90,12 @@ public:
         else if constexpr (std::is_floating_point_v<Type>) {
             return std::stod(value);
         }
-                
-        return (Type)0;
+
+        else if constexpr (std::is_same_v<Type, std::string> || std::is_same_v<Type, const char*>) {
+            return value.c_str();
+        }
+
+        return 0;
     }
     
     template <class Type>
