@@ -27,12 +27,11 @@ class IniParser{
         return !isSection(row) && !row.empty();
     }
 
-    std::string parseValidData(std::string &message){
+    std::string parseValidData(std::string& message){
         size_t backslash = message.find_first_of("\\");
         size_t comment = message.find_first_of(";");
         if(backslash != std::string::npos && comment != std::string::npos){
             return message.erase(backslash,1);
-            std::cout << "parseValidData() " << message << "\n";
         }
         else if(comment != std::string::npos)
             return message.substr(0,comment);
@@ -84,11 +83,11 @@ class IniParser{
 public:
     IniParser(const std::string& file);
 
-    bool hasSection(std::string section){
+    bool hasSection(const std::string& section){
         return data.find(section) != data.end();
     };
 
-    bool hasKey(std::string section, std::string key){
+    bool hasKey(const std::string& section, const std::string& key){
         auto sectionIterator = data.find(section);
         if(sectionIterator == data.end())
             return false;

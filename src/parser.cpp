@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <fstream>
 #include <ios>
+#include <stdexcept>
 #include <string>
 #include "ini_exception.hpp"
 
@@ -38,7 +39,7 @@ void IniParser::fillData(){
 IniParser::IniParser(const std::string& fileName){
     file.open(fileName, std::ios::in | std::ios::out);
     if(!file.is_open())
-        std::cerr << "Can't open file\n";
+        throw std::runtime_error("Can't open file");
     this->fileName = fileName;
     fillData();
 }
