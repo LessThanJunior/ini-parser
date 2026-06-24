@@ -39,7 +39,7 @@ void IniParser::fillData(){
 IniParser::IniParser(const std::string& fileName){
     file.open(fileName, std::ios::in | std::ios::out);
     if(!file.is_open())
-        throw std::runtime_error("Can't open file");
+        throw NotFoundFileException("Can't open file " + fileName);
     this->fileName = fileName;
     fillData();
 }

@@ -10,6 +10,10 @@ protected:
     IniParser unformatted{"examples/unformatted.ini"};
 };
 
+TEST_F(ParserTest, NotFoundFile){
+    EXPECT_THROW(IniParser(""), NotFoundFileException);
+}
+
 TEST_F(ParserTest, HasSectionReturnFalseWhenMissing){
     EXPECT_FALSE(parser.hasSection("window"));
 }

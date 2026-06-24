@@ -13,4 +13,9 @@ public:
     TypeException(std::string message) : std::runtime_error(message){}
 };
 
+class NotFoundFileException : public std::runtime_error{
+public:
+    NotFoundFileException(std::string message) : std::runtime_error(message){}
+};
+
 #endif
