@@ -1,5 +1,6 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
+#include "ini_exception.hpp"
 #include <fstream>
 #include <stdexcept>
 #include <type_traits>
@@ -24,6 +25,28 @@ class IniParser{
 
     bool isKeyOrValue(const std::string& row){
         return !isSection(row) && !row.empty();
+    }
+
+    std::string parseValidData(std::string &message){
+        size_t backslash = message.find_first_of("\\");
+        size_t comment = message.find_first_of(";");
+        if(backslash != std::string::npos && comment != std::string::npos){
+            return message.erase(backslash,1);
+            std::cout << "parseValidData() " << message << "\n";
+        }
+        else if(comment != std::string::npos)
+            return message.substr(0,comment);
+        return message;
+    }
+
+    std::string parseCommentAndSemicolon(std::string &message){
+        size_t backslash = message.find_first_of("\\");
+        size_t comment = message.find_first_of(";");
+        if(backslash != std::string::npos)
+            return message.substr(backslash);
+        else if(comment != std::string::npos)
+            return message.substr(comment);
+        return "";
     }
 
     std::pair<std::string, std::string> getKeyValue(const std::string& row){
@@ -75,24 +98,29 @@ public:
 
     template <class Type>
     inline Type get(const std::string& section, const std::string& key){
-        const auto& value = data.at(section).at(key);
-
+        auto value = data.at(section).at(key);
+        std::string formatted = parseValidData(value);
+ 
         if constexpr (std::is_same_v<Type, bool>) {
-            if(value != "true" && value != "false")
-                throw std::runtime_error("Isn't a boolean");
-            return value == "true" ? true : false;
+            if(formatted != "true" && formatted != "false")
+                throw TypeException("Can't be bool cast");
+            return formatted == "true" ? true : false;
         }
 
         else if constexpr (std::is_integral_v<Type>) {
-            return std::stoull(value);
+            return std::stoull(formatted);
         }  
 
         else if constexpr (std::is_floating_point_v<Type>) {
-            return std::stod(value);
+            return std::stod(formatted);
         }
 
-        else if constexpr (std::is_same_v<Type, std::string> || std::is_same_v<Type, const char*>) {
-            return value.c_str();
+        else if constexpr (std::is_same_v<Type, std::string>) {
+            return formatted;
+        }
+
+        else if constexpr (std::is_same_v<Type, const char*>) {
+            throw TypeException("Don't use char array, it's better use std::string");
         }
 
         return 0;
@@ -100,6 +128,9 @@ public:
     
     template <class Type>
     inline void set(const std::string& section, const std::string& key, const Type& value){
+        auto& current_value = data.at(section).at(key);
+        std::string comment = parseCommentAndSemicolon(current_value);
+        
         std::string newValue = "";
         bool boolean; 
 
@@ -116,6 +147,8 @@ public:
             newValue.assign(value);
         }
         
+        newValue.append(comment);
+
         data.at(section).at(key) = newValue;
         saveFile();
     }

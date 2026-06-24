@@ -10,5 +10,6 @@ int main(){
     config.set("Database", "Paths", "data/database12345.db");
     config.set("General","Debug", true);
     config.set("Window", "Width", 1280);
-    std::cout << config.get<const char*>("General","Version") << "\n";
+    std::cout << config.get<std::string>("General","Version") << "\n";
+    std::cout << config.get<uint16_t>("Window","Height") << "\n";
 }

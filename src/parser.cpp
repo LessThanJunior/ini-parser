@@ -1,7 +1,13 @@
 #include "parser.hpp"
+#include <algorithm>
 #include <fstream>
 #include <ios>
 #include <string>
+#include "ini_exception.hpp"
+
+void trim(std::string &message){
+    message.erase(std::remove(message.begin(), message.end(), ' '), message.end());
+}
 
 void IniParser::fillData(){
     std::string row;
@@ -9,10 +15,12 @@ void IniParser::fillData(){
     data.clear();
     file.clear();
     file.seekg(0);
-    
+
     if(file.is_open()){
         std::string last_section = "";
         while(std::getline(file, row)){
+            trim(row);
+
             if(isSection(row)){
                 // Remove "[]" from section name
                 last_section = row.substr(1, row.size()-2);
@@ -23,6 +31,7 @@ void IniParser::fillData(){
                 data[last_section][keyValue.first] = keyValue.second;
             }
         }
+        if(last_section == "") throw EmptyFileException(fileName);
     }
 }
 
