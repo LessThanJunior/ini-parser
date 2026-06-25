@@ -34,6 +34,7 @@ cmake --build build
 ### prebuilt
 Download latest release from:
 https://github.com/LessThanJunior/ini-parser/releases
+
 ---
 
 ## Features
