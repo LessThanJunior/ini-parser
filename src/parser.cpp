@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <fstream>
 #include <ios>
-#include <stdexcept>
 #include <string>
 #include "ini_exception.hpp"
 

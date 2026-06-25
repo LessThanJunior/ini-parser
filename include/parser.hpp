@@ -2,7 +2,6 @@
 #define PARSER_HPP
 #include "ini_exception.hpp"
 #include <fstream>
-#include <stdexcept>
 #include <type_traits>
 #include <unordered_map>
 #include <string>
