@@ -8,6 +8,34 @@ This project is an educational self-made INI parser aimed at improving skills in
 
 ---
 
+## Usage
+
+```cpp
+#include "parser.hpp"
+
+IniParser parser("config.ini");
+uint16_t value = parser.get<uint16_t>("section", "key");
+parser.set("section", "key", value + 1);
+```
+
+---
+
+## Install
+
+### build from sourse
+```sh
+git clone https://github.com/LessThanJunior/ini-parser
+cd ini-parser
+
+cmake -B build
+cmake --build build
+```
+
+### prebuilt
+Download latest release from:
+https://github.com/LessThanJunior/ini-parser/releases
+---
+
 ## Features
 
 - [x] Check if section exists  
@@ -22,7 +50,9 @@ This project is an educational self-made INI parser aimed at improving skills in
 
 ## Documentation
 
-### `IniParser parser(const std::string& filepath)`
+```cpp
+IniParser parser(const std::string& filepath)
+```
 
 Loads and parses an INI file into memory.
 
@@ -31,7 +61,9 @@ Loads and parses an INI file into memory.
 
 ---
 
-### `parser.get<T>(const std::string& section, const std::string& key)`
+```cpp
+parser.get<T>(const std::string& section, const std::string& key)
+```
 
 Retrieves a value as type `T`.
 
@@ -47,7 +79,9 @@ Retrieves a value as type `T`.
 
 ---
 
-### `parser.set<T>(const std::string& section, const std::string& key, const T& value)`
+```cpp
+parser.set<T>(const std::string& section, const std::string& key, const T& value)
+```
 
 Updates a value in memory and persists changes to the INI file.
 
@@ -62,13 +96,15 @@ Updates a value in memory and persists changes to the INI file.
 
 ---
 
-### `parser.hasSection(const std::string& section)`
+```cpp
+parser.hasSection(const std::string& section)
+```
 
 Returns `true` if the section exists.
 
----
-
-### `parser.hasKey(const std::string& section, const std::string& key)`
+```cpp
+parser.hasKey(const std::string& section, const std::string& key)
+```
 
 Returns `true` if the key exists in the specified section.
 

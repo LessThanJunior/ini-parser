@@ -12,23 +12,36 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 enable_testing()
 
-add_executable(${PROJECT_NAME} main.cpp src/parser.cpp)
-add_executable(${PROJECT_NAME}_TESTS
-    tests/parser_tests.cpp
+# --------------- Library --------------
+
+add_library(ini_parser
     src/parser.cpp
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE "include/")
-target_include_directories(${PROJECT_NAME}_TESTS PRIVATE include/)
+target_include_directories(ini_parser PUBLIC
+    ${CMAKE_SOURCE_DIR}/include
+)
+
+# --------------- Main application -------------
+
+add_executable(${PROJECT_NAME} main.cpp)
+target_link_libraries(${PROJECT_NAME}
+    ini_parser
+)
+
+# --------------- Tests -------------------
+add_executable(${PROJECT_NAME}_TESTS
+    tests/parser_tests.cpp
+)
+target_link_libraries(${PROJECT_NAME}_TESTS
+    ini_parser
+    GTest::gtest_main
+)
 
 target_compile_definitions(${PROJECT_NAME}_TESTS PRIVATE
     PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
 )
 
-target_link_libraries(
-  ${PROJECT_NAME}_TESTS
-  GTest::gtest_main
-)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}_TESTS WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
