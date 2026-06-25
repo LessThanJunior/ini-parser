@@ -55,3 +55,7 @@ TEST_F(ParserTest, CheckingCommentSection){
 TEST_F(ParserTest, ThrowExceptionWhenFileIsEmpty){
     EXPECT_THROW(IniParser("examples/empty.ini"), EmptyFileException);
 }
+
+TEST(CITest, TestPassed){
+    EXPECT_EQ(1, 1);
+}
