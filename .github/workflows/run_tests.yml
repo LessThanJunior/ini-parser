@@ -1,0 +1,23 @@
+name: Automated Tests
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure
+      run: cmake -B build
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Run tests
+      run: ctest --test-dir build --output-on-failure
