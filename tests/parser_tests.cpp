@@ -57,5 +57,5 @@ TEST_F(ParserTest, ThrowExceptionWhenFileIsEmpty){
 }
 
 TEST(CI_Check, FailedTest){
-    EXPECT_EQ(1, 0);
+    EXPECT_EQ(1, 2);
 }
